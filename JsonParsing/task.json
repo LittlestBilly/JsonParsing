@@ -1,7 +1,7 @@
 [
   {
     "name": "TaskPad",
-    "notes": "Make an App to manage projects/work",
+    "notes": "Make an App to manage projects/work in C#",
     "steps": [
       {
         "stepname": "Make the json format.",

@@ -18,6 +18,7 @@ namespace JsonParsing
         //Json parameters
         public string name { get; set; }
         public string notes { get; set; }
+        
         public List<Step> steps { get; set; }
 
     }
@@ -209,6 +210,39 @@ namespace JsonParsing
                 }
                 i++;
             }
+
+            reWrite(serializeTask(taskList));
+
+
+        }
+
+        //Method to edit task
+        public void editTask(string taskName, string newTaskName, string newTaskNotes)
+        {
+            List<Task> taskList = deserializeTask(readJson());
+            
+            int i = 0;
+
+            foreach(Task task in taskList)
+            {
+                if (task.name.Equals(taskName))
+                {
+                    i = taskList.IndexOf(task);
+
+                    break;
+                    
+                }
+            }
+            List<Step> stepList = taskList[i].steps;
+             
+            Task newTask = new Task
+            {
+                name = newTaskName,
+                notes = newTaskNotes,
+                steps = stepList
+            };
+
+            taskList[i] = newTask;
 
             reWrite(serializeTask(taskList));
 
