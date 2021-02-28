@@ -14,8 +14,8 @@
         "priority": 2
       },
       {
-        "stepname": "Make new project and create github repository",
-        "stepstate": 1,
+        "stepname": "Make new project and create github repository!!!",
+        "stepstate": 3,
         "priority": 1
       }
     ]

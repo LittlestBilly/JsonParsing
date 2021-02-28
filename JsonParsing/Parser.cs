@@ -155,24 +155,63 @@ namespace JsonParsing
         public void removeStep(string taskName, string stepname)
         {
             List<Task> taskList = deserializeTask(readJson());
-
+            int i = 0;
             foreach (Task task in taskList)
             {
                 if (task.name.Equals(taskName))
                 {
-                    foreach (Step step in taskList[0].steps)
+                    foreach (Step step in taskList[i].steps)
                     {
                         if (step.stepname.Equals(stepname))
                         {
-                            taskList[0].steps.Remove(step);
+                            taskList[i].steps.Remove(step);
                             break;
                         }
                     }
                     break;
                 }
+                i++;
             }
 
             reWrite(serializeTask(taskList));
+
+        }
+
+        //Method to edit step
+        public void editStep(string taskName, string stepName, string newStepName, int newStepPriority, int newStepState)
+        {
+            int i = 0;
+
+            Step editedStep = new Step
+            {
+                stepname = newStepName,
+                stepstate = newStepState,
+                priority = newStepPriority
+
+            };
+
+            List<Task> taskList = deserializeTask(readJson());
+            foreach (Task task in taskList)
+            {
+                if (task.name.Equals(taskName))
+                {
+                    foreach (Step step in taskList[i].steps)
+                    {
+                        if (step.stepname.Equals(stepName))
+                        {
+                            int si = taskList[i].steps.IndexOf(step);
+                            taskList[i].steps[si] = editedStep;
+
+                            break;
+                        }
+                    }
+                    break;
+                }
+                i++;
+            }
+
+            reWrite(serializeTask(taskList));
+
 
         }
 
