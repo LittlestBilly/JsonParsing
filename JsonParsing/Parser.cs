@@ -249,6 +249,23 @@ namespace JsonParsing
 
         }
 
+        //Method to delete task
+        public void removeTask(string taskname)
+        {
+            List<Task> taskList = deserializeTask(readJson());
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                Task task = taskList[i];
+                if (task.name.Equals(taskname))
+                {
+                    taskList.Remove(task);
+                }
+            }
+
+            reWrite(serializeTask(taskList));
+
+        }
+
 
 
         //Method to add something to json file
