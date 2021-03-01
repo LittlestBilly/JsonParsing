@@ -6,11 +6,34 @@ using System.IO;
 
 namespace JsonParsing
 {
+
+    //Step priority Enum
+    public enum Priority
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2
+
+    }
+
+    //Step progress Enum
+    public enum stepstate
+    {
+        Pending = 0,
+        InProgress = 1,
+        Done = 2
+    }
+
+
+
     public class Step
     {   //Task Step parameters
+
+
+
         public string stepname { get; set; }
-        public int stepstate { get; set; }
-        public int priority { get; set; }
+        public stepstate stepstate { get; set; }
+        public Priority priority { get; set; }
     }
 
     public class Task
@@ -26,6 +49,12 @@ namespace JsonParsing
 
     class Parser
     {
+
+      
+
+
+
+
         //Json file path
         private string path;
 
@@ -60,25 +89,6 @@ namespace JsonParsing
             return serialized;
         }
 
-        //Step priority Enum
-        enum Priority
-        {
-            Low = 1,
-            Medium = 2,
-            High = 3
-
-        }
-
-        //Step progress Enum
-        enum Progress
-        {
-            Pending = 1,
-            InProgress = 2,
-            Done = 3
-        }
-
-
-
         //Method to read out Json content
         public void fromJson()
         {
@@ -93,10 +103,11 @@ namespace JsonParsing
                 {
                     Console.WriteLine("----------------------------------");
                     Console.WriteLine(taskList[i].steps[x].stepname);
-                    var ss = (Progress)taskList[i].steps[x].stepstate;
-                    Console.WriteLine(ss);
-                    var p = (Priority)taskList[i].steps[x].priority;
-                    Console.WriteLine(p);
+                    //var ss = (stepstate)taskList[i].steps[x].stepstate;
+
+                    Console.WriteLine(taskList[i].steps[x].stepstate);
+                  //  var p = (Priority)taskList[i].steps[x].priority;
+                    Console.WriteLine(taskList[i].steps[x].priority);
                 }
                 Console.WriteLine("___________________________________");
 
@@ -104,13 +115,14 @@ namespace JsonParsing
         }
 
         //Method to help make new steps and returns the step as a list.
-        public Step makeStep(string makeStepname, int makePriority)
+        public Step makeStep(string makeStepname, Priority makePriority)
         {
+            
             //Creates the Step object
             Step newStep = new Step
             {
                 stepname = makeStepname,
-                stepstate = 1,
+                stepstate = stepstate.Pending,
                 priority = makePriority
             };
 
@@ -129,7 +141,7 @@ namespace JsonParsing
 
 
         //Method to add steps to an existing task
-        public void addSteps(String taskName, string addStepname, int addPriority)
+        public void addSteps(String taskName, string addStepname, Priority addPriority)
         {
 
             List<Task> taskList = deserializeTask(readJson());
@@ -179,7 +191,7 @@ namespace JsonParsing
         }
 
         //Method to edit step
-        public void editStep(string taskName, string stepName, string newStepName, int newStepPriority, int newStepState)
+        public void editStep(string taskName, string stepName, string newStepName, Priority newStepPriority, stepstate newStepState)
         {
             int i = 0;
 

@@ -5,18 +5,18 @@
     "steps": [
       {
         "stepname": "Make the json format.",
-        "stepstate": 2,
-        "priority": 3
+        "stepstate": 1,
+        "priority": 2
       },
       {
         "stepname": "Parse the json with C#",
-        "stepstate": 2,
+        "stepstate": 1,
         "priority": 2
       },
       {
         "stepname": "Make new project and create github repository!!!",
-        "stepstate": 3,
-        "priority": 1
+        "stepstate": 2,
+        "priority": 0
       }
     ]
   },
@@ -26,8 +26,8 @@
     "steps": [
       {
         "stepname": "TestStep",
-        "stepstate": 1,
-        "priority": 1
+        "stepstate": 0,
+        "priority": 0
       }
     ]
   }
