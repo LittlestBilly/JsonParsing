@@ -54,7 +54,7 @@ namespace JsonParsing
 
 
         //Check if task exist
-        public Boolean taskExist(string taskName)
+        public Boolean taskExists(string taskName)
         {
             List<Task> taskList = deserializeTask(readJson());
 
@@ -72,7 +72,7 @@ namespace JsonParsing
             return false;
         }
 
-        public Boolean stepExist(string taskName, string stepName)
+        public Boolean stepExists(string taskName, string stepName)
         {
             List<Task> taskList = deserializeTask(readJson());
 
@@ -190,7 +190,7 @@ namespace JsonParsing
         //Method to add steps to an existing task
         public void addSteps(String taskName, string addStepname, Priority addPriority)
         {
-            if (stepExist(taskName, addStepname))
+            if (stepExists(taskName, addStepname))
             {
                 Console.WriteLine("Step already exists");
                 return;
@@ -233,7 +233,7 @@ namespace JsonParsing
         //Method to delete steps from task
         public void removeStep(string taskName, string stepname)
         {
-            if(!(stepExist(taskName, stepname))){
+            if(!(stepExists(taskName, stepname))){
                 return;
             }
 
@@ -350,7 +350,7 @@ namespace JsonParsing
         //Method to add something to json file
         public void addTask(string addName, string addNotes, List<Step> addSteps)
         {
-            if (taskExist(addName))
+            if (taskExists(addName))
             {
                 Console.WriteLine("Task already exists");
                 return;
