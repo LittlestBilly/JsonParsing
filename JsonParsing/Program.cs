@@ -20,7 +20,7 @@ namespace JsonParsing
             Parser pobj = new Parser(@"C:\Users\Roope\source\repos\JsonParsing\JsonParsing\task.json");
 
             //pobj.addTask("TaskPad2", "Notes", pobj.makeStepList(pobj.makeStep("Test1", 0)));
-            //pobj.addSteps("New test task with priority testing", "TestStep2", 0);
+            pobj.addSteps("New test task with priority testing", "TestStep2", 0);
 
             //  pobj.removeTask("TaskPad2");
             //pobj.removeStep("TaskPad2", "Test1");

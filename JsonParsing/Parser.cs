@@ -53,10 +53,17 @@ namespace JsonParsing
     {
         //Json file path
         private string path;
-
+        private string tempJson;
         public Parser(string pathToJson)
         {
             this.path = pathToJson;
+            this.tempJson = @"[
+    {
+        'name': 'TempTask%&%&%&%',
+        'notes': 'Task made because File was empty.',
+        'steps': []
+    }
+]";
         }
         //Reads JSON file
         public string readJson()
@@ -64,6 +71,11 @@ namespace JsonParsing
             if (File.Exists(this.path))
             {
                 Console.WriteLine("File exists");
+                if (@File.ReadAllText(this.path).Trim().Equals(""))
+                {
+                    reWrite(this.tempJson);
+                }
+
                 return @File.ReadAllText(this.path);
             }
             return null;
@@ -90,6 +102,7 @@ namespace JsonParsing
 
         public Boolean stepExists(string taskName, string stepName)
         {
+
             List<Task> taskList = deserializeTask(readJson());
 
             foreach (Task task in taskList)
@@ -188,50 +201,58 @@ namespace JsonParsing
         //Method to add steps to an existing task
         public void addSteps(String taskName, string addStepname, Priority addPriority)
         {
-            if (stepExists(taskName, addStepname))
+            if (taskExists(taskName))
             {
-                Console.WriteLine("Step already exists");
-                return;
-            }
-            List<Task> taskList = deserializeTask(readJson());
-            int index = 0;
-
-
-            foreach (Task task in taskList)
-            {
-                if (task.name.ToLower().Equals(taskName.ToLower()))
+                if (stepExists(taskName, addStepname))
                 {
-                    Console.WriteLine("Item Found!!!");
-                    index = taskList.IndexOf(task);
-                    break;
+                    Console.WriteLine("Step already exists");
+                    return;
                 }
 
-            }
+                List<Task> taskList = deserializeTask(readJson());
+                int index = 0;
 
 
-          /*  for (int i = 0; taskList.Count - 1 >= i; i++)
-            {
-                if (taskList[i].name.ToLower().Equals(taskName.ToLower()))
+                foreach (Task task in taskList)
                 {
-                    Console.WriteLine("Item Found!!!");
-                    index = i;
-                    break;
+                    if (task.name.ToLower().Equals(taskName.ToLower()))
+                    {
+                        Console.WriteLine("Item Found!!!");
+                        index = taskList.IndexOf(task);
+                        break;
+                    }
+
                 }
-            }*/
-
-            taskList[index].steps.Add(makeStep(addStepname, addPriority));
-
-            reWrite(serializeTask(taskList));
 
 
+                /*  for (int i = 0; taskList.Count - 1 >= i; i++)
+                  {
+                      if (taskList[i].name.ToLower().Equals(taskName.ToLower()))
+                      {
+                          Console.WriteLine("Item Found!!!");
+                          index = i;
+                          break;
+                      }
+                  }*/
+
+                taskList[index].steps.Add(makeStep(addStepname, addPriority));
+
+                reWrite(serializeTask(taskList));
 
 
+
+            }
+            else
+            {
+                Console.WriteLine("Task does not exist");
+            }
         }
 
         //Method to delete steps from task
         public void removeStep(string taskName, string stepname)
         {
-            if(!(stepExists(taskName, stepname))){
+            if (!(stepExists(taskName, stepname)))
+            {
                 return;
             }
 
