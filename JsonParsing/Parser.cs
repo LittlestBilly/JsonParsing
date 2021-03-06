@@ -51,7 +51,23 @@ namespace JsonParsing
 
     class Parser
     {
+        //Json file path
+        private string path;
 
+        public Parser(string pathToJson)
+        {
+            this.path = pathToJson;
+        }
+        //Reads JSON file
+        public string readJson()
+        {
+            if (File.Exists(this.path))
+            {
+                Console.WriteLine("File exists");
+                return @File.ReadAllText(this.path);
+            }
+            return null;
+        }
 
         //Check if task exist
         public Boolean taskExists(string taskName)
@@ -97,24 +113,6 @@ namespace JsonParsing
             return false;
         }
 
-
-        //Json file path
-        private string path;
-
-        public Parser(string pathToJson)
-        {
-            this.path = pathToJson;
-        }
-        //Reads JSON file
-        public string readJson()
-        {
-            if (File.Exists(this.path))
-            {
-                Console.WriteLine("File exists");
-                return @File.ReadAllText(this.path);
-            }
-            return null;
-        }
 
         //Rewrites JSON file
         public void reWrite(string newJson)
