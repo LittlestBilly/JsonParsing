@@ -28,6 +28,22 @@
         "stepname": "TestStep",
         "stepstate": 0,
         "priority": 0
+      },
+      {
+        "stepname": "TestStep2",
+        "stepstate": 0,
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "name": "TaskPad2",
+    "notes": "Notes",
+    "steps": [
+      {
+        "stepname": "TEST2",
+        "stepstate": 0,
+        "priority": 0
       }
     ]
   }

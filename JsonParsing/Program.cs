@@ -19,7 +19,15 @@ namespace JsonParsing
             
             Parser pobj = new Parser(@"C:\Users\Roope\source\repos\JsonParsing\JsonParsing\task.json");
 
+            //pobj.addTask("TaskPad2", "Notes", pobj.makeStepList(pobj.makeStep("Test1", 0)));
+            //pobj.addSteps("New test task with priority testing", "TestStep2", 0);
+
+            //  pobj.removeTask("TaskPad2");
+            //pobj.removeStep("TaskPad2", "Test1");
+            pobj.addSteps("TASkPAd2", "TEST2", 0);
             pobj.fromJson();
+
+           
 
             //pobj.editTask("TaskPad", "TaskPad", "Make an App to manage projects/work in C#");
             //pobj.removeTask("New test task with priority testing2");

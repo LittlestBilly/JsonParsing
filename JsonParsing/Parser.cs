@@ -41,18 +41,61 @@ namespace JsonParsing
         //Json parameters
         public string name { get; set; }
         public string notes { get; set; }
-        
+
         public List<Step> steps { get; set; }
 
     }
 
 
+
+
     class Parser
     {
 
-      
+
+        //Check if task exist
+        public Boolean taskExist(string taskName)
+        {
+            List<Task> taskList = deserializeTask(readJson());
+
+            foreach (Task task in taskList)
+            {
+                if (task.name.ToLower().Equals(taskName.ToLower()))
+                {
+                    return true;
+                }
+
+            }
 
 
+
+            return false;
+        }
+
+        public Boolean stepExist(string taskName, string stepName)
+        {
+            List<Task> taskList = deserializeTask(readJson());
+
+            foreach (Task task in taskList)
+            {
+                if (task.name.ToLower().Equals(taskName.ToLower()))
+                {
+
+                    List<Step> stepList = task.steps;
+                    foreach (Step step in stepList)
+                    {
+                        if (step.stepname.ToLower().Equals(stepName.ToLower()))
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+
+            }
+
+            return false;
+        }
 
 
         //Json file path
@@ -62,10 +105,15 @@ namespace JsonParsing
         {
             this.path = pathToJson;
         }
-
+        //Reads JSON file
         public string readJson()
         {
-            return @File.ReadAllText(this.path);
+            if (File.Exists(this.path))
+            {
+                Console.WriteLine("File exists");
+                return @File.ReadAllText(this.path);
+            }
+            return null;
         }
 
         //Rewrites JSON file
@@ -103,10 +151,10 @@ namespace JsonParsing
                 {
                     Console.WriteLine("----------------------------------");
                     Console.WriteLine(taskList[i].steps[x].stepname);
-                    //var ss = (stepstate)taskList[i].steps[x].stepstate;
+
 
                     Console.WriteLine(taskList[i].steps[x].stepstate);
-                  //  var p = (Priority)taskList[i].steps[x].priority;
+
                     Console.WriteLine(taskList[i].steps[x].priority);
                 }
                 Console.WriteLine("___________________________________");
@@ -117,7 +165,7 @@ namespace JsonParsing
         //Method to help make new steps and returns the step as a list.
         public Step makeStep(string makeStepname, Priority makePriority)
         {
-            
+
             //Creates the Step object
             Step newStep = new Step
             {
@@ -132,7 +180,6 @@ namespace JsonParsing
         //Creates a list and adds the object to the List
         public List<Step> makeStepList(Step newStep)
         {
-
             List<Step> stepList = new List<Step>();
             stepList.Add(newStep);
             return stepList;
@@ -143,23 +190,42 @@ namespace JsonParsing
         //Method to add steps to an existing task
         public void addSteps(String taskName, string addStepname, Priority addPriority)
         {
-
+            if (stepExist(taskName, addStepname))
+            {
+                Console.WriteLine("Step already exists");
+                return;
+            }
             List<Task> taskList = deserializeTask(readJson());
             int index = 0;
-            for (int i = 0; taskList.Count - 1 >= i; i++)
-            {
-                if (taskList[i].name.Equals(taskName))
-                {
 
+
+            foreach (Task task in taskList)
+            {
+                if (task.name.ToLower().Equals(taskName.ToLower()))
+                {
+                    Console.WriteLine("Item Found!!!");
+                    index = taskList.IndexOf(task);
+                    break;
+                }
+
+            }
+
+
+          /*  for (int i = 0; taskList.Count - 1 >= i; i++)
+            {
+                if (taskList[i].name.ToLower().Equals(taskName.ToLower()))
+                {
                     Console.WriteLine("Item Found!!!");
                     index = i;
                     break;
                 }
-            }
+            }*/
 
             taskList[index].steps.Add(makeStep(addStepname, addPriority));
 
             reWrite(serializeTask(taskList));
+
+
 
 
         }
@@ -167,6 +233,10 @@ namespace JsonParsing
         //Method to delete steps from task
         public void removeStep(string taskName, string stepname)
         {
+            if(!(stepExist(taskName, stepname))){
+                return;
+            }
+
             List<Task> taskList = deserializeTask(readJson());
             int i = 0;
             foreach (Task task in taskList)
@@ -232,21 +302,21 @@ namespace JsonParsing
         public void editTask(string taskName, string newTaskName, string newTaskNotes)
         {
             List<Task> taskList = deserializeTask(readJson());
-            
+
             int i = 0;
 
-            foreach(Task task in taskList)
+            foreach (Task task in taskList)
             {
                 if (task.name.Equals(taskName))
                 {
                     i = taskList.IndexOf(task);
 
                     break;
-                    
+
                 }
             }
             List<Step> stepList = taskList[i].steps;
-             
+
             Task newTask = new Task
             {
                 name = newTaskName,
@@ -275,15 +345,16 @@ namespace JsonParsing
             }
 
             reWrite(serializeTask(taskList));
-
         }
-
-
 
         //Method to add something to json file
         public void addTask(string addName, string addNotes, List<Step> addSteps)
         {
-
+            if (taskExist(addName))
+            {
+                Console.WriteLine("Task already exists");
+                return;
+            }
             //Deserializing the json string as a list so we can add new task;
             List<Task> taskList = deserializeTask(readJson());
             //Creating new Task object with parameters that we want to add
@@ -297,13 +368,8 @@ namespace JsonParsing
             //Adding the new object to the list
             taskList.Add(added);
 
-
             //Rewrites Json
             reWrite(serializeTask(taskList));
-
         }
-
-
-
     }
 }
